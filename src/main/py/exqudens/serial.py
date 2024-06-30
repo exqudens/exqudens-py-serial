@@ -34,9 +34,23 @@ class Serial:
             self.__logger.error(e, exc_info=True)
             raise e
 
+    def get_logger_id(self) -> str:
+        try:
+            return self.__pybind_serial.get_logger_id()
+        except Exception as e:
+            self.__logger.error(e, exc_info=True)
+            raise e
+
     def set_log_function(self, function: Callable[[str, int, str, str, int, str], None]) -> None:
         try:
             self.__pybind_serial.set_log_function(function)
+        except Exception as e:
+            self.__logger.error(e, exc_info=True)
+            raise e
+
+    def is_set_log_function(self) -> bool:
+        try:
+            return self.__pybind_serial.is_set_log_function()
         except Exception as e:
             self.__logger.error(e, exc_info=True)
             raise e
@@ -104,6 +118,20 @@ class Serial:
     def close(self) -> None:
         try:
             self.__pybind_serial.close()
+        except Exception as e:
+            self.__logger.error(e, exc_info=True)
+            raise e
+
+    def write_bytes(self, value: list[int]) -> int:
+        try:
+            return self.__pybind_serial.write_bytes(value)
+        except Exception as e:
+            self.__logger.error(e, exc_info=True)
+            raise e
+
+    def read_bytes(self, size: int) -> list[int]:
+        try:
+            return self.__pybind_serial.read_bytes(size)
         except Exception as e:
             self.__logger.error(e, exc_info=True)
             raise e

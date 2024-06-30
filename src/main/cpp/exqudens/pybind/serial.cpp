@@ -11,6 +11,10 @@ PYBIND11_MODULE(serial, object) {
             pybind11::init()
         )
         .def(
+            "get_logger_id",
+            &exqudens::Serial::getLoggerId
+        )
+        .def(
             "set_log_function",
             &exqudens::Serial::setLogFunction
         )
@@ -59,10 +63,17 @@ PYBIND11_MODULE(serial, object) {
         )
         .def(
             "write_bytes",
-            &exqudens::Serial::writeBytes
+            [](exqudens::Serial* self, const std::vector<int>& value) {
+                std::vector<unsigned char> bytes(value.begin(), value.end());
+                return self->writeBytes(bytes);
+            }
         )
         .def(
             "read_bytes",
-            &exqudens::Serial::readBytes
+            [] (exqudens::Serial* self, const size_t &size) {
+                std::vector<unsigned char> bytes = self->readBytes(size);
+                std::vector<int> result(bytes.begin(), bytes.end());
+                return result;
+            }
         );
 }
